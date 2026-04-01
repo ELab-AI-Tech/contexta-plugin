@@ -1,0 +1,49 @@
+name: Package & Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  zip-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read plugin version
+        id: version
+        run: |
+          VERSION=$(jq -r '.version' .claude-plugin/plugin.json)
+          SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+          echo "label=v$VERSION ($SHORT_SHA)" >> $GITHUB_OUTPUT
+
+      - name: Create zip
+        run: |
+          zip -r elab-contexta-plugin.zip \
+            .claude-plugin/ \
+            skills/ \
+            ORCHESTRATOR.md \
+            README.md
+
+      - name: Delete existing release for this version tag (if any)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "${{ steps.version.outputs.tag }}" --yes 2>/dev/null || true
+          git push origin ":refs/tags/${{ steps.version.outputs.tag }}" 2>/dev/null || true
+
+      - name: Create release with zip
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.version.outputs.tag }}" \
+            elab-contexta-plugin.zip \
+            --title "ELab Contexta Plugin ${{ steps.version.outputs.label }}" \
+            --notes "Built from commit [\`${{ github.sha }}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) on \`main\`." \
+            --latest
