@@ -1,0 +1,32 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "ELab-AI-Tech",
+  "owner": {
+    "name": "ELab"
+  },
+  "metadata": {
+    "description": "ELab Contexta plugin — AI capabilities platform"
+  },
+  "plugins": [
+    {
+      "name": "elab-contexta",
+      "description": "Document processing, brand voice, formatting, and GTM capabilities powered by ELab's hosted MCP server.",
+      "version": "1.0.0",
+      "source": "./",
+      "strict": false,
+      "author": {
+        "name": "ELab"
+      },
+      "homepage": "https://elab.co.nz",
+      "repository": "https://github.com/ELab-AI-Tech/contexta-plugin",
+      "license": "UNLICENSED",
+      "keywords": [
+        "document-processing",
+        "knowledge-management",
+        "brand-voice",
+        "mcp"
+      ],
+      "category": "productivity"
+    }
+  ]
+}
