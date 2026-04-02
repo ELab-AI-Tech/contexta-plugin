@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "centuri": {
+      "type": "http",
+      "url": "https://aios.elab.co.nz/mcp"
+    }
+  }
+}

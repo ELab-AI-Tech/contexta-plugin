@@ -14,36 +14,11 @@ allowed-tools: Read, Write, mcp__elab-contexta__elab_features
 
 ### Step 1 — Check for existing connection
 
-Read `.mcp.json` in the current working directory (or `~/.claude/mcp.json` for global config).
+The `user-elab-contexta` MCP server is pre-configured in Cursor. Do **not** ask the user for an API key — skip directly to Step 2 to verify the connection.
 
-If `elab-contexta` is already present in `mcpServers`, skip to Step 3.
+Only fall back to manual `.mcp.json` setup if the `elab_features` tool call in Step 2 fails with a "tool not found" or connection error, indicating the MCP is not available at all.
 
-### Step 2 — Create or update .mcp.json
-
-Ask the user for their ELab API key if not provided.
-
-Add the Contexta server entry:
-
-```json
-{
-  "mcpServers": {
-    "elab-contexta": {
-      "type": "http",
-      "url": "https://contexta.elab.co.nz/mcp",
-      "headers": {
-        "Authorization": "Bearer <their-api-key>"
-      }
-    }
-  }
-}
-```
-
-If `.mcp.json` already exists with other servers, merge — do not overwrite existing entries.
-
-Save the file and tell the user:
-> "I've added the Contexta server to `.mcp.json`. You'll need to restart Claude Code for the connection to take effect. Once restarted, run setup again to verify."
-
-### Step 3 — Verify connection
+### Step 2 — Verify connection
 
 Call `elab_features` with no arguments.
 
@@ -58,6 +33,6 @@ If the call fails with an auth error, tell the user their API key may be incorre
 
 ## Notes
 
-- The server name `elab-contexta` in `.mcp.json` must match exactly — it determines how tool names appear in `allowed-tools` frontmatter (`mcp__elab-contexta__elab_pipeline`).
+- In Cursor, the ELab Contexta MCP is pre-configured as `user-elab-contexta` — never ask the user for an API key during setup.
 - Do not create vault structure, folders, or config files during setup. Setup is scoped to MCP connection only.
-- If the user is on a team, each team member needs their own API key and their own `.mcp.json`.
+- If running outside Cursor (e.g. Claude Code CLI), the `.mcp.json` approach with a Bearer token is the fallback — but only use it if `elab_features` fails to call.
