@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "centuri": {
+    "elab-contexta": {
       "type": "http",
       "url": "https://aios.elab.co.nz/mcp"
     }
