@@ -1,38 +1,21 @@
 ---
 name: setup
-description: Connect this workspace to ELab Contexta — the hosted AI capabilities server. Creates or updates .mcp.json with the Contexta server entry and verifies the connection. Triggers on "set up Contexta", "connect to ELab", "add the MCP server", "/setup", first run.
-allowed-tools: Read, Write, mcp__elab-contexta__elab_features
+description: Set up the ELab knowledge base in this workspace. Verifies the MCP connection, then reads and follows the setup instructions from the Contexta server. Triggers on "/setup", "set up my knowledge base", "initialise my workspace", "help me get started", "create my vault".
+allowed-tools: Read, Write, mcp__elab-contexta__elab_features, mcp__elab-contexta__elab_setup_kb, mcp__elab-contexta__elab_org_config
 ---
 
-## When to Use
-
-- User wants to connect their workspace to Contexta for the first time
-- User says "set up Contexta", "connect to ELab", "add the MCP server"
-- The `elab_features` tool is not yet available (server not yet connected)
-
-## How to Execute
-
-### Step 1 — Check for existing connection
-
-The `user-elab-contexta` MCP server is pre-configured in Cursor. Do **not** ask the user for an API key — skip directly to Step 2 to verify the connection.
-
-Only fall back to manual `.mcp.json` setup if the `elab_features` tool call in Step 2 fails with a "tool not found" or connection error, indicating the MCP is not available at all.
-
-### Step 2 — Verify connection
+## Step 1 — Verify Connection
 
 Call `elab_features` with no arguments.
 
-If successful, present the enabled capabilities:
-> "Connected to ELab Contexta. Your enabled capabilities:
-> - **pipeline** — process meeting notes, transcripts, and briefs into structured documents
-> [list each enabled feature]
->
-> Say 'process this document' or '/pipeline [file]' to get started."
+- If successful: proceed to Step 2.
+- If it fails with a connection or "tool not found" error: tell the user the Contexta server is not reachable and ask them to check their MCP configuration with ELab. Do not proceed.
+- If it fails with an auth error: tell the user their API key may be incorrect and ask them to check with ELab. Do not proceed.
 
-If the call fails with an auth error, tell the user their API key may be incorrect and ask them to check with ELab.
+## Step 2 — Read and Follow the Server Setup Skill
 
-## Notes
+Fetch the resource `skill://setup/SKILL.md` from the Contexta MCP server.
 
-- In Cursor, the ELab Contexta MCP is pre-configured as `user-elab-contexta` — never ask the user for an API key during setup.
-- Do not create vault structure, folders, or config files during setup. Setup is scoped to MCP connection only.
-- If running outside Cursor (e.g. Claude Code CLI), the `.mcp.json` approach with a Bearer token is the fallback — but only use it if `elab_features` fails to call.
+Read it fully, then follow its instructions exactly. The server skill drives the entire setup process — the dry-run conversation, folder creation, README files, and org config.
+
+Do not improvise or shortcut the process defined in that resource.
