@@ -1,7 +1,7 @@
 ---
 name: setup
 description: Set up the ELab knowledge base in this workspace. Verifies the MCP connection, fetches the full setup process from the Contexta server, then follows it step by step. Triggers on "/setup", "set up my knowledge base", "initialise my workspace", "help me get started", "create my vault".
-allowed-tools: Read, Write, Glob, Grep, mcp__elab-contexta__elab_features, mcp__elab-contexta__elab_get_skill, mcp__elab-contexta__elab_setup_kb, mcp__elab-contexta__elab_org_config
+allowed-tools: Read, Write, Glob, Grep, mcp__elab-contexta__elab_features, mcp__elab-contexta__elab_get_skill, mcp__elab-contexta__elab_org_config
 ---
 
 ## Critical Rule
