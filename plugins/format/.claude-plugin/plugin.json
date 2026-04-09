@@ -1,9 +1,0 @@
-{
-  "name": "elab-format",
-  "version": "1.0.0",
-  "description": "Document export (Word DOCX, PDF, PowerPoint PPTX) via ELab Contexta MCP, plus local Office file handling via OfficeCLI.",
-  "author": {
-    "name": "ELab"
-  },
-  "homepage": "https://elab.co.nz"
-}
