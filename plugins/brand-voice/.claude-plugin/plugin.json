@@ -1,0 +1,9 @@
+{
+  "name": "elab-brand-voice",
+  "version": "1.0.0",
+  "description": "Apply ELab brand voice and house style to any text — removes corporate filler, tightens language, switches passive to active.",
+  "author": {
+    "name": "ELab"
+  },
+  "homepage": "https://elab.co.nz"
+}

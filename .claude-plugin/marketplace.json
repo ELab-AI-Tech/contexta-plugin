@@ -4,13 +4,31 @@
     "name": "ELab"
   },
   "metadata": {
-    "description": "ELab Contexta plugin — AI capabilities platform for document processing, brand voice, and knowledge management."
+    "description": "ELab Contexta — AI capabilities platform. Knowledge base management, GTM pipeline, brand voice, and document formatting powered by ELab's hosted MCP server."
   },
   "plugins": [
     {
-      "name": "elab-contexta",
-      "description": "Document processing, brand voice, and formatting capabilities powered by ELab's hosted MCP server. Extracts SOPs, decisions, lessons, and frameworks from any source document.",
-      "source": "./",
+      "name": "elab-knowledge-base",
+      "description": "Knowledge base setup, document processing, health check, query, memory capture, and next-action recommendations.",
+      "source": "./plugins/knowledge-base",
+      "version": "1.0.0"
+    },
+    {
+      "name": "elab-gtm",
+      "description": "Full GTM sales pipeline — lead qualification, research, outreach, meeting prep, reverse briefs, negotiation, and contract assembly.",
+      "source": "./plugins/gtm",
+      "version": "1.0.0"
+    },
+    {
+      "name": "elab-brand-voice",
+      "description": "Apply ELab brand voice and house style to any text.",
+      "source": "./plugins/brand-voice",
+      "version": "1.0.0"
+    },
+    {
+      "name": "elab-format",
+      "description": "Document export (Word, PDF, PowerPoint) and Office file handling via OfficeCLI.",
+      "source": "./plugins/format",
       "version": "1.0.0"
     }
   ]

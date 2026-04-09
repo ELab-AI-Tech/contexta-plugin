@@ -84,4 +84,4 @@ Archive/           ← processed source documents
 
 ## Support
 
-Contact ELab for API key issues, feature upgrades, or onboarding support.
+Contact ELab for API key issues, capability upgrades, or onboarding support.

@@ -1,0 +1,9 @@
+{
+  "name": "elab-knowledge-base",
+  "version": "1.0.0",
+  "description": "ELab knowledge base — setup, document processing, health, query, memory capture, and next-action recommendations. Powered by ELab Contexta MCP.",
+  "author": {
+    "name": "ELab"
+  },
+  "homepage": "https://elab.co.nz"
+}
