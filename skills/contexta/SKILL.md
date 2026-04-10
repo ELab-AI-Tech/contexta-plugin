@@ -20,9 +20,18 @@ Each capability has a skill resource on the Contexta server. Read it before exec
 |---|---|---|
 | Session start / what's available / workspace health | `skill://knowledge-base/health/SKILL.md` | `elab_capabilities`, `elab_org_config` |
 | Process a document into structured knowledge | `skill://knowledge-base/pipeline/SKILL.md` | `elab_pipeline` |
+| Capture friction, corrections, or learnings into the KB | `skill://knowledge-base/remember/SKILL.md` | _(local writes only)_ |
 | Apply ELab brand voice to text or a file | `skill://brand-voice/SKILL.md` | `elab_brand_voice` |
 | Export a document as Word, PDF, or PowerPoint | `skill://format/SKILL.md` | `elab_format` |
-| GTM pipeline (qualify/research/outreach/meeting prep/reverse brief) | `skill://gtm/SKILL.md` | `elab_gtm` |
+| View or manage task stack | `skill://workspace/tasks/SKILL.md` | _(local reads/writes only)_ |
+| Surface next recommended action | `skill://workspace/next/SKILL.md` | _(local reads only)_ |
+| Qualify a lead (Go / No-Go / Needs More Info) | `skill://gtm/qualify/SKILL.md` | `elab_gtm` |
+| Research a prospect company and contacts | `skill://gtm/research/SKILL.md` | `elab_gtm` |
+| Draft any pipeline communication (outreach, follow-up, etc.) | `skill://gtm/outreach/SKILL.md` | `elab_gtm` |
+| Prepare a meeting briefing | `skill://gtm/meeting-prep/SKILL.md` | `elab_gtm` |
+| Generate a reverse brief from a discovery transcript | `skill://gtm/reverse-brief/SKILL.md` | `elab_gtm` |
+| Analyse client feedback and recommend a response strategy | `skill://gtm/negotiation/SKILL.md` | `elab_gtm` |
+| Assemble SOW and MSA from a confirmed reverse brief | `skill://gtm/contract/SKILL.md` | `elab_gtm` |
 
 Read the resource using `elab_get_skill`, follow its steps, then call the tool.
 
