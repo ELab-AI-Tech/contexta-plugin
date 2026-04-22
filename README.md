@@ -1,4 +1,4 @@
-# ELab Contexta Plugin
+# Contexta Plugin
 
 **The client-facing Claude Code / Cursor plugin for ELab Contexta.**
 
@@ -11,7 +11,7 @@ This plugin connects your AI agent to ELab's hosted capabilities server — givi
 You need a GitHub account that has been added as a collaborator on this repo by ELab.
 
 ```
-/plugin install elab-contexta@ELab-AI-Tech
+/plugin install contexta@ELab-AI-Tech
 ```
 
 Then run the setup skill to connect your workspace:

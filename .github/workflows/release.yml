@@ -25,10 +25,9 @@ jobs:
 
       - name: Create zip
         run: |
-          zip -r elab-contexta-plugin.zip \
+          zip -r contexta-plugin.zip \
             .claude-plugin/ \
             skills/ \
-            ORCHESTRATOR.md \
             README.md
 
       - name: Delete existing release for this version tag (if any)
@@ -43,7 +42,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create "${{ steps.version.outputs.tag }}" \
-            elab-contexta-plugin.zip \
-            --title "ELab Contexta Plugin ${{ steps.version.outputs.label }}" \
+            contexta-plugin.zip \
+            --title "Contexta Plugin ${{ steps.version.outputs.label }}" \
             --notes "Built from commit [\`${{ github.sha }}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) on \`main\`." \
             --latest

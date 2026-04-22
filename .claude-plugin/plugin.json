@@ -1,7 +1,7 @@
 {
-  "name": "elab-contexta",
-  "version": "1.0.0",
-  "description": "ELab Contexta — AI capabilities platform. Document processing, brand voice, formatting, and GTM tools powered by ELab's secure hosted MCP server.",
+  "name": "contexta",
+  "version": "2.0.0",
+  "description": "Contexta — AI capabilities platform. Document processing, brand voice, formatting, and GTM tools powered by ELab's secure hosted MCP server.",
   "author": {
     "name": "ELab"
   },
