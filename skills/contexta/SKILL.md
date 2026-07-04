@@ -27,13 +27,16 @@ Each capability has a skill resource on the Contexta server. Read it before exec
 | View or manage task stack | `workspace/tasks` | _(local reads/writes only)_ |
 | Surface next recommended action | `workspace/next` | _(local reads only)_ |
 | Search the knowledge base | `query/query` | _(local search only)_ |
-| Qualify a lead (Go / No-Go / Needs More Info) | `gtm/qualify` | `contexta_gtm` |
-| Research a prospect company and contacts | `gtm/research` | `contexta_gtm` |
-| Draft any pipeline communication (outreach, follow-up, etc.) | `gtm/outreach` | `contexta_gtm` |
+| Qualify a lead (Go / No-Go / Needs More Info) | `gtm/lead-qualifier` | `contexta_gtm` |
+| Research a prospect company and contacts | `gtm/client-deep-research` | `contexta_gtm` |
+| Draft any pipeline communication (outreach, follow-up, etc.) | `gtm/communications-drafter` | `contexta_gtm` |
 | Prepare a meeting briefing | `gtm/meeting-prep` | `contexta_gtm` |
-| Generate a reverse brief from a discovery transcript | `gtm/reverse-brief` | `contexta_gtm` |
-| Analyse client feedback and recommend a response strategy | `gtm/negotiation` | `contexta_gtm` |
-| Assemble SOW and MSA from a confirmed reverse brief | `gtm/contract` | `contexta_gtm` |
+| Generate a reverse brief from a discovery transcript | `gtm/reverse-brief-generator` | `contexta_gtm` |
+| Analyse client feedback and recommend a response strategy | `gtm/negotiation-advisor` | `contexta_gtm` |
+| Assemble SOW and MSA from a confirmed reverse brief | `gtm/contract-assembler` | `contexta_gtm` |
+| Create, advance, or update a deal in the CRM | `gtm/pipeline-manager` | `contexta_gtm` |
+| Monday pipeline report and follow-up queue | `gtm/pipeline-review` | `contexta_gtm` |
+| Build an external-safe case study from an internal one | `gtm/case-study-builder` | `contexta_gtm` |
 
 Read the resource using `contexta_get_skill`, follow its steps, then call the tool.
 
