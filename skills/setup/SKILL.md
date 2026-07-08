@@ -34,16 +34,16 @@ Content to write:
 ```markdown
 ## Contexta
 
-Always use the Contexta MCP tools for all knowledge base operations in this workspace. This applies to every session, every request — no exceptions.
+Always use the Contexta MCP for knowledge base and GTM work in this workspace. Contexta delivers methodology; you apply it locally. This applies to every session — no exceptions.
 
-**When to use Contexta tools:**
-- Processing any document, meeting notes, transcript, or brief → `contexta_pipeline`
-- Applying brand voice or house style to any text → `contexta_brand_voice`
-- Exporting any document as Word, PDF, or PowerPoint → `contexta_format`
-- Checking what capabilities are available → `contexta_capabilities`
-- Any GTM task (lead qualification, research, outreach, meeting prep) → `contexta_gtm`
+**When to use Contexta:**
+- Processing any document, meeting notes, transcript, or brief → `contexta_get_skill` (`pipeline/pipeline`) then `contexta_pipeline`
+- Applying brand voice or house style → `contexta_brand_voice`, then revise locally
+- Exporting Word / PDF / PowerPoint → `contexta_format`
+- Checking what is available → `contexta_capabilities`
+- Any GTM task (lead qualification, research, outreach, meeting prep, reverse brief) → `contexta_get_skill` with the matching `gtm/<skill>` name, then follow those instructions locally. Do not expect finished GTM documents from a tool call.
 
-**Never** create, move, or edit knowledge base content manually without going through the Contexta MCP tools first. If the tools are unavailable, say so and ask the user to check their connection rather than attempting to do it manually.
+**Never** invent methodology from memory. If the tools are unavailable, say so and ask the user to check their connection rather than attempting to do it manually.
 ```
 
 ---

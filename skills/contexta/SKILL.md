@@ -1,12 +1,12 @@
 ---
 name: contexta
-description: Route all knowledge base, GTM, brand voice, and document operations through Contexta. Any time the user creates, processes, queries, archives, exports, or styles a document — or runs any GTM pipeline step — read the relevant Contexta skill resource for instructions, then call the MCP tool. Never handle knowledge base content or GTM steps manually. Triggers on any file, document, or GTM operation in the workspace.
+description: Route all knowledge base, GTM, brand voice, and document operations through Contexta. Any time the user creates, processes, queries, archives, exports, or styles a document — or runs any GTM pipeline step — read the relevant Contexta skill resource for instructions, then apply them locally (and call a contexta_* tool only when the table says to). Never handle knowledge base content or GTM steps from memory. Triggers on any file, document, or GTM operation in the workspace.
 allowed-tools: mcp__contexta__contexta_capabilities, mcp__contexta__contexta_get_skill, mcp__contexta__contexta_org_config, mcp__contexta__contexta_pipeline, mcp__contexta__contexta_brand_voice, mcp__contexta__contexta_format, mcp__contexta__contexta_gtm, mcp__contexta__contexta_setup
 ---
 
 ## Rule
 
-Any operation on the knowledge base or GTM pipeline goes through Contexta. Do not write, move, style, or process documents manually — delegate to the MCP.
+Any operation on the knowledge base or GTM pipeline goes through Contexta. Do not invent methodology from memory — fetch the server skill, then execute it in your own context.
 
 ## Step 1 — Check What's Available
 
@@ -16,26 +16,34 @@ At the start of any session (or when the user asks "what can you do"), call `con
 
 Each capability has a skill resource on the Contexta server. Read it before executing using `contexta_get_skill`. Skill names use the format `<capability>/<skill>`:
 
-| Intent | Skill to fetch | Tool to call |
+| Intent | Skill to fetch | Then |
 |---|---|---|
 | Session start / workspace health / what's available | `workspace/health` | `contexta_capabilities`, `contexta_org_config` |
-| Process a document into structured knowledge | `pipeline/pipeline` | `contexta_pipeline` |
-| Capture friction, corrections, or learnings into the KB | `pipeline/remember` | _(local writes only)_ |
-| Apply brand voice and house style to text or a file | `brand-voice/brand-voice` | `contexta_brand_voice` |
-| Export a document as Word, PDF, or PowerPoint | `format/format` | `contexta_format` |
-| Set up the knowledge base workspace | `setup/setup` | `contexta_setup` |
-| View or manage task stack | `workspace/tasks` | _(local reads/writes only)_ |
-| Surface next recommended action | `workspace/next` | _(local reads only)_ |
-| Search the knowledge base | `query/query` | _(local search only)_ |
-| Qualify a lead (Go / No-Go / Needs More Info) | `gtm/qualify` | `contexta_gtm` |
-| Research a prospect company and contacts | `gtm/research` | `contexta_gtm` |
-| Draft any pipeline communication (outreach, follow-up, etc.) | `gtm/outreach` | `contexta_gtm` |
-| Prepare a meeting briefing | `gtm/meeting-prep` | `contexta_gtm` |
-| Generate a reverse brief from a discovery transcript | `gtm/reverse-brief` | `contexta_gtm` |
-| Analyse client feedback and recommend a response strategy | `gtm/negotiation` | `contexta_gtm` |
-| Assemble SOW and MSA from a confirmed reverse brief | `gtm/contract` | `contexta_gtm` |
+| Process a document into structured knowledge | `pipeline/pipeline` | Call `contexta_pipeline` for methodology, then extract locally |
+| Capture friction, corrections, or learnings into the KB | `pipeline/remember` | Follow skill locally (writes only) |
+| Apply brand voice and house style to text or a file | `brand-voice/brand-voice` | Call `contexta_brand_voice` for methodology, then revise locally |
+| Export a document as Word, PDF, or PowerPoint | `format/format` | Call `contexta_format` |
+| Set up the knowledge base workspace | `setup/setup` | Follow skill; call `contexta_setup` when it says to |
+| View or manage task stack | `workspace/tasks` | Follow skill locally |
+| Surface next recommended action | `workspace/next` | Follow skill locally |
+| Search the knowledge base | `query/query` | Follow skill locally |
+| Qualify a lead (Go / No-Go / Needs More Info) | `gtm/lead-qualifier` | Follow skill locally — do not expect a finished scorecard from a tool |
+| Research a prospect company and contacts | `gtm/client-deep-research` | Follow skill locally |
+| Draft any pipeline communication (outreach, follow-up, etc.) | `gtm/communications-drafter` | Follow skill locally |
+| Prepare a meeting briefing | `gtm/meeting-prep` | Follow skill locally |
+| Generate a reverse brief from a discovery transcript | `gtm/reverse-brief-generator` | Follow skill locally |
+| Analyse client feedback and recommend a response strategy | `gtm/negotiation-advisor` | Follow skill locally |
+| Assemble SOW and MSA from a confirmed reverse brief | `gtm/contract-assembler` | Follow skill locally |
+| Manage pipeline / CRM deal state | `gtm/pipeline-manager` | Follow skill locally |
+| Review pipeline / follow-up sequences | `gtm/pipeline-review` | Follow skill locally |
 
-Read the resource using `contexta_get_skill`, follow its steps, then call the tool.
+**How to execute:**
+
+1. Call `contexta_get_skill` with the skill name from the table (e.g. `gtm/reverse-brief-generator`).
+2. Follow the returned instructions in your own context using the files/notes already in scope.
+3. Call a `contexta_*` tool only when the "Then" column names one, or when the fetched skill explicitly tells you to.
+
+`contexta_gtm` is an optional shortcut that returns the same GTM skill body for a given `action`. Prefer `contexta_get_skill`. Never treat either call as producing the finished deliverable — you write the output locally.
 
 > **Note:** Skill availability depends on org capabilities. `contexta_capabilities` returns the exact set enabled for your org — including any org-specific skills (standup, runbook, pitch, etc.) that your org has configured.
 
