@@ -19,23 +19,27 @@ jobs:
         run: |
           VERSION=$(jq -r '.version' .claude-plugin/plugin.json)
           SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+          # Unique tag per deploy so every main push publishes a zip;
+          # --latest keeps /releases/latest/download/contexta-plugin.zip current.
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
-          echo "label=v$VERSION ($SHORT_SHA)" >> $GITHUB_OUTPUT
+          echo "tag=v${VERSION}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "label=v${VERSION} (${SHORT_SHA})" >> $GITHUB_OUTPUT
+
+      - name: Validate plugin
+        run: |
+          if command -v claude >/dev/null 2>&1; then
+            claude plugin validate ./ --strict
+          else
+            echo "claude CLI not available in CI — skipping plugin validate"
+          fi
 
       - name: Create zip
         run: |
           zip -r contexta-plugin.zip \
             .claude-plugin/ \
             skills/ \
-            README.md
-
-      - name: Delete existing release for this version tag (if any)
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release delete "${{ steps.version.outputs.tag }}" --yes 2>/dev/null || true
-          git push origin ":refs/tags/${{ steps.version.outputs.tag }}" 2>/dev/null || true
+            README.md \
+            -x "*.DS_Store" "*/.DS_Store"
 
       - name: Create release with zip
         env:
@@ -44,5 +48,10 @@ jobs:
           gh release create "${{ steps.version.outputs.tag }}" \
             contexta-plugin.zip \
             --title "Contexta Plugin ${{ steps.version.outputs.label }}" \
-            --notes "Built from commit [\`${{ github.sha }}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) on \`main\`." \
+            --notes "$(cat <<EOF
+          Built from commit [\`${{ github.sha }}\`](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) on \`main\`.
+
+          Download \`contexta-plugin.zip\` and install via Claude Code, or use the Download button on the Contexta dashboard Overview.
+          EOF
+          )" \
             --latest

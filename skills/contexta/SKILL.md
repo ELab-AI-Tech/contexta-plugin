@@ -1,7 +1,7 @@
 ---
 name: contexta
 description: Route all knowledge base, GTM, brand voice, and document operations through Contexta. Any time the user creates, processes, queries, archives, exports, or styles a document — or runs any GTM pipeline step — read the relevant Contexta skill resource for instructions, then apply them locally (and call a contexta_* tool only when the table says to). Never handle knowledge base content or GTM steps from memory. Triggers on any file, document, or GTM operation in the workspace.
-allowed-tools: mcp__contexta__contexta_capabilities, mcp__contexta__contexta_get_skill, mcp__contexta__contexta_org_config, mcp__contexta__contexta_pipeline, mcp__contexta__contexta_brand_voice, mcp__contexta__contexta_format, mcp__contexta__contexta_gtm, mcp__contexta__contexta_setup
+allowed-tools: mcp__plugin_contexta_contexta__contexta_capabilities, mcp__plugin_contexta_contexta__contexta_get_skill, mcp__plugin_contexta_contexta__contexta_org_config, mcp__plugin_contexta_contexta__contexta_pipeline, mcp__plugin_contexta_contexta__contexta_brand_voice, mcp__plugin_contexta_contexta__contexta_format, mcp__plugin_contexta_contexta__contexta_gtm, mcp__plugin_contexta_contexta__contexta_governance, mcp__plugin_contexta_contexta__contexta_setup, mcp__contexta__contexta_capabilities, mcp__contexta__contexta_get_skill, mcp__contexta__contexta_org_config, mcp__contexta__contexta_pipeline, mcp__contexta__contexta_brand_voice, mcp__contexta__contexta_format, mcp__contexta__contexta_gtm, mcp__contexta__contexta_governance, mcp__contexta__contexta_setup
 ---
 
 ## Rule
@@ -21,12 +21,21 @@ Each capability has a skill resource on the Contexta server. Read it before exec
 | Session start / workspace health / what's available | `workspace/health` | `contexta_capabilities`, `contexta_org_config` |
 | Process a document into structured knowledge | `pipeline/pipeline` | Call `contexta_pipeline` for methodology, then extract locally |
 | Capture friction, corrections, or learnings into the KB | `pipeline/remember` | Follow skill locally (writes only) |
+| Update an existing knowledge document | `pipeline/update` | Follow skill locally |
+| Produce professional documentation from notes or drafts | `pipeline/professional-documentation` | Follow skill locally |
+| QA a deliverable before sending | `pipeline/deliverable-qa` | Follow skill locally |
 | Apply brand voice and house style to text or a file | `brand-voice/brand-voice` | Call `contexta_brand_voice` for methodology, then revise locally |
+| Build or refine the company voice profile | `brand-voice/voice-builder` | Follow skill locally |
+| Build a personal voice profile | `personal-voice/voice-builder` | Follow skill locally |
+| QA voice-profiled content | `voice-qa/qa` | Follow skill locally |
 | Export a document as Word, PDF, or PowerPoint | `format/format` | Call `contexta_format` |
 | Set up the knowledge base workspace | `setup/setup` | Follow skill; call `contexta_setup` when it says to |
 | View or manage task stack | `workspace/tasks` | Follow skill locally |
 | Surface next recommended action | `workspace/next` | Follow skill locally |
 | Search the knowledge base | `query/query` | Follow skill locally |
+| Assess a Google Drive → Office migration | `drive-migration/assess` | Follow skill locally |
+| Run a Google Drive → Office migration | `drive-migration/migrate` | Follow skill locally |
+| Board meeting pipeline | `governance/board` | Call `contexta_governance` when the skill says to |
 | Qualify a lead (Go / No-Go / Needs More Info) | `gtm/lead-qualifier` | Follow skill locally — do not expect a finished scorecard from a tool |
 | Research a prospect company and contacts | `gtm/client-deep-research` | Follow skill locally |
 | Draft any pipeline communication (outreach, follow-up, etc.) | `gtm/communications-drafter` | Follow skill locally |
@@ -49,9 +58,9 @@ Each capability has a skill resource on the Contexta server. Read it before exec
 
 ## If Tools Are Not Available
 
-The Contexta server is not connected. Ask the user to run setup:
+The Contexta MCP server is bundled with this plugin but requires OAuth sign-in. Tell the user:
 
-> "The Contexta server isn't connected. Say 'set up Contexta' and I'll configure it."
+> "Contexta isn't signed in yet. Run `/mcp`, select **contexta**, and complete the browser sign-in. Then say 'set up Contexta' or retry your request."
 
 ## If a Tool Returns a Feature Error
 

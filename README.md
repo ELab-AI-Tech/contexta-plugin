@@ -1,8 +1,8 @@
 # Contexta Plugin
 
-**The client-facing Claude Code / Cursor plugin for ELab Contexta.**
+**The client-facing Claude Code plugin for ELab Contexta.**
 
-This plugin connects your AI agent to ELab's hosted capabilities server — giving you document processing, brand voice, and formatting tools powered by ELab's methodology, without any implementation leaving ELab's servers.
+This plugin connects your AI agent to ELab's hosted capabilities server — giving you document processing, brand voice, formatting, and GTM tools powered by ELab's methodology, without any implementation leaving ELab's servers.
 
 ---
 
@@ -11,10 +11,17 @@ This plugin connects your AI agent to ELab's hosted capabilities server — givi
 You need a GitHub account that has been added as a collaborator on this repo by ELab.
 
 ```
+/plugin marketplace add ELab-AI-Tech/contexta-plugin
 /plugin install contexta@ELab-AI-Tech
 ```
 
-Then run the setup skill to connect your workspace:
+Then sign in to the Contexta MCP server (OAuth — no API key):
+
+```
+/mcp
+```
+
+Select **contexta** and complete the browser sign-in. After that, set up your workspace:
 
 ```
 set up Contexta
@@ -24,8 +31,8 @@ set up Contexta
 
 ## What You Need
 
-- An ELab API key (provided during onboarding)
-- Claude Code v1.0.33+ or Cursor with plugin support
+- Claude Code with plugin support
+- An ELab Contexta account (sign in via `/mcp` when prompted)
 
 ---
 
@@ -33,11 +40,10 @@ set up Contexta
 
 | Skill | Trigger | What it does |
 |---|---|---|
-| `setup` | "set up Contexta", "connect to ELab", "/setup" | Writes `.mcp.json` and verifies the server connection |
-| `help` | "/help", "what can you do", "where were we" | Session-orient: shows enabled capabilities and documents waiting in `Incoming/` |
-| `pipeline` | "/pipeline [file]", "process this document", "extract from meeting notes" | Extracts SOPs, decisions, lessons, frameworks from source documents |
-| `brand-voice` | "/brand-voice [file]", "apply brand voice", "make this sound like us" | Applies ELab house style — removes filler, tightens language, switches passive to active |
-| `format` | "/format [file] as docx", "export as PDF", "save as PowerPoint" | Exports any markdown document as Word, PDF, or PowerPoint |
+| `setup` | "set up Contexta", "set up my knowledge base", "/setup" | Verifies the MCP connection, then fetches and follows the full workspace setup process from the server |
+| `contexta` | Any knowledge base, GTM, brand voice, or document operation | Routes to the right server skill via `contexta_get_skill`, then applies methodology locally |
+
+Capability-specific instructions (pipeline, brand voice, GTM, format, governance, etc.) live on the server and are fetched on demand — they are not shipped in this plugin.
 
 ---
 
@@ -45,10 +51,10 @@ set up Contexta
 
 This plugin contains only orchestration skills — no ELab methodology or processing logic is stored here. When you ask Claude to process a document, the plugin instructs Claude to:
 
-1. Read your local file
-2. Send the content to ELab's hosted MCP server
-3. Receive structured output back
-4. Write results to your knowledge base
+1. Call `contexta_get_skill` for the relevant skill (e.g. `pipeline/pipeline`)
+2. Follow the returned instructions in its own context
+3. Call a `contexta_*` tool only when the skill says to (methodology stays on the server)
+4. Write results to your local knowledge base
 
 The extraction logic, brand voice guidelines, quality rules, and ELab methodology run entirely on ELab's server and are never exposed to the client.
 
@@ -56,19 +62,19 @@ The extraction logic, brand voice guidelines, quality rules, and ELab methodolog
 
 ## MCP Server
 
-The plugin connects to:
+The plugin bundles a connection to:
 
 ```
-https://contexta.elab.co.nz/mcp
+https://aios.elab.co.nz/mcp
 ```
 
-Authentication uses a per-org API key passed as a Bearer token. Each team member needs their own key configured in `.mcp.json`.
+Authentication uses OAuth. Run `/mcp`, select **contexta**, and complete browser sign-in. No API key is required in your workspace config.
 
 ---
 
 ## File Structure (After Setup)
 
-The pipeline skill writes to a structured knowledge base:
+The setup skill creates a structured knowledge base (exact folders depend on your org config):
 
 ```
 Incoming/          ← drop documents here to process
@@ -84,4 +90,8 @@ Archive/           ← processed source documents
 
 ## Support
 
-Contact ELab for API key issues, capability upgrades, or onboarding support.
+Contact ELab at [support@elab.co.nz](mailto:support@elab.co.nz) for account access, capability upgrades, or onboarding support.
+
+## Releases
+
+Every push to `main` runs GitHub Actions **Package & Release**, which builds `contexta-plugin.zip` and publishes it as the latest GitHub Release. The Contexta dashboard Overview **Download plugin** button streams that zip to signed-in users (no GitHub collaborator access required on their side).

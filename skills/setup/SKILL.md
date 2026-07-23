@@ -1,7 +1,7 @@
 ---
 name: setup
 description: Set up the Contexta knowledge base in this workspace. Verifies the MCP connection, fetches the full setup process from the Contexta server, then follows it step by step. Triggers on "/setup", "set up my knowledge base", "initialise my workspace", "help me get started", "create my vault".
-allowed-tools: Read, Write, Glob, Grep, mcp__contexta__contexta_capabilities, mcp__contexta__contexta_get_skill, mcp__contexta__contexta_org_config, mcp__contexta__contexta_setup
+allowed-tools: Read, Write, Glob, Grep, mcp__plugin_contexta_contexta__contexta_capabilities, mcp__plugin_contexta_contexta__contexta_get_skill, mcp__plugin_contexta_contexta__contexta_org_config, mcp__plugin_contexta_contexta__contexta_setup, mcp__contexta__contexta_capabilities, mcp__contexta__contexta_get_skill, mcp__contexta__contexta_org_config, mcp__contexta__contexta_setup
 ---
 
 ## Critical Rule
@@ -15,8 +15,11 @@ Do NOT call `contexta_setup`, `contexta_org_config`, or write any files until yo
 Call `contexta_capabilities` with no arguments.
 
 - If successful: proceed to Step 2.
-- If it fails with a connection or "tool not found" error: tell the user the Contexta server is not reachable and ask them to check their MCP configuration with ELab. Do not proceed.
-- If it fails with an auth error: tell the user their API key may be incorrect. Do not proceed.
+- If it fails with a connection, "tool not found", or auth error: the Contexta MCP server is bundled with this plugin but requires OAuth sign-in. Tell the user:
+
+  > "Contexta isn't signed in yet. Run `/mcp`, select **contexta**, and complete the browser sign-in. Then say 'set up Contexta' again."
+
+  Do not proceed until `contexta_capabilities` succeeds.
 
 ---
 
@@ -43,7 +46,7 @@ Always use the Contexta MCP for knowledge base and GTM work in this workspace. C
 - Checking what is available → `contexta_capabilities`
 - Any GTM task (lead qualification, research, outreach, meeting prep, reverse brief) → `contexta_get_skill` with the matching `gtm/<skill>` name, then follow those instructions locally. Do not expect finished GTM documents from a tool call.
 
-**Never** invent methodology from memory. If the tools are unavailable, say so and ask the user to check their connection rather than attempting to do it manually.
+**Never** invent methodology from memory. If the tools are unavailable, say so and ask the user to run `/mcp` and complete Contexta sign-in rather than attempting to do it manually.
 ```
 
 ---
