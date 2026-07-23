@@ -37,6 +37,7 @@ jobs:
         run: |
           zip -r contexta-plugin.zip \
             .claude-plugin/ \
+            .mcp.json \
             skills/ \
             README.md \
             -x "*.DS_Store" "*/.DS_Store"
