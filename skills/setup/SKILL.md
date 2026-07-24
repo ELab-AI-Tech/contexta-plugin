@@ -58,3 +58,5 @@ Call `contexta_get_skill` with `skill_name: "setup/setup"`.
 Read the full content returned. It contains a multi-phase process — discovery, conversation, staged folder creation with confirmation gates. Follow every phase in order. Do not summarise, skip, or compress any phase, especially the conversation phases that happen before any files are created.
 
 The content returned by `contexta_get_skill` is the single source of truth for this process.
+
+When the server skill finishes by writing org config via `contexta_org_config` (`action: "write"`), that write marks dashboard onboarding as complete. Do not skip the finalize write.
