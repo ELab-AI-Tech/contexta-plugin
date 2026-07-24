@@ -25,10 +25,10 @@ Each capability has a skill resource on the Contexta server. Read it before exec
 | Produce professional documentation from notes or drafts | `pipeline/professional-documentation` | Follow skill locally |
 | QA a deliverable before sending | `pipeline/deliverable-qa` | Follow skill locally |
 | Apply brand voice and house style to text or a file | `brand-voice/brand-voice` | Call `contexta_brand_voice` for methodology, then revise locally |
-| Build or refine the company voice profile | `brand-voice/voice-builder` | Follow skill locally |
-| Build a personal voice profile | `personal-voice/voice-builder` | Follow skill locally |
-| QA voice-profiled content | `voice-qa/qa` | Follow skill locally |
-| Export a document as Word, PDF, or PowerPoint | `format/format` | Call `contexta_format` |
+| Build or refine the company voice profile | `brand-voice/brand-voice-builder` | Follow skill locally |
+| Build a personal voice profile | `personal-voice/personal-voice-builder` | Follow skill locally |
+| QA voice-profiled content | `voice-qa/content-qa` | Follow skill locally |
+| Export a document as Word, PDF, PowerPoint, or Excel | `format/format` | Call `contexta_format` with `format` only (no file content) for skill instructions, then build locally — or `contexta_get_skill` (`format/docx`, `format/pptx`, `format/pdf`, `format/xlsx`) |
 | Set up the knowledge base workspace | `setup/setup` | Follow skill; call `contexta_setup` when it says to |
 | View or manage task stack | `workspace/tasks` | Follow skill locally |
 | Surface next recommended action | `workspace/next` | Follow skill locally |
@@ -48,13 +48,13 @@ Each capability has a skill resource on the Contexta server. Read it before exec
 
 **How to execute:**
 
-1. Call `contexta_get_skill` with the skill name from the table (e.g. `gtm/reverse-brief-generator`).
+1. Call `contexta_get_skill` with the **full** skill name from the table (e.g. `gtm/reverse-brief-generator`). Always use `<capability>/<skill>` — never the bare skill slug alone (e.g. use `internal/compliance-calendar`, not `compliance-calendar`).
 2. Follow the returned instructions in your own context using the files/notes already in scope.
 3. Call a `contexta_*` tool only when the "Then" column names one, or when the fetched skill explicitly tells you to.
 
 `contexta_gtm` is an optional shortcut that returns the same GTM skill body for a given `action`. Prefer `contexta_get_skill`. Never treat either call as producing the finished deliverable — you write the output locally.
 
-> **Note:** Skill availability depends on org capabilities. `contexta_capabilities` returns the exact set enabled for your org — including any org-specific skills (standup, runbook, pitch, etc.) that your org has configured.
+> **Note:** Skill availability depends on org capabilities. `contexta_capabilities` returns the exact set enabled for your org — including any org-specific skills under the `internal` capability (e.g. `internal/standup`, `internal/compliance-calendar`, `internal/runbook`) that your org has configured. Always fetch those as `internal/<skill>`.
 
 ## If Tools Are Not Available
 

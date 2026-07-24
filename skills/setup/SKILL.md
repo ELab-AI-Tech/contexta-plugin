@@ -52,7 +52,7 @@ Always use the Contexta MCP for knowledge base and GTM work in this workspace. C
 **When to use Contexta:**
 - Processing any document, meeting notes, transcript, or brief → `contexta_get_skill` (`pipeline/pipeline`) then `contexta_pipeline`
 - Applying brand voice or house style → `contexta_brand_voice`, then revise locally
-- Exporting Word / PDF / PowerPoint → `contexta_format`
+- Exporting Word / PDF / PowerPoint / Excel → `contexta_format` with the target `format` only (do not send file content); follow the returned skill locally
 - Checking what is available → `contexta_capabilities`
 - Any GTM task (lead qualification, research, outreach, meeting prep, reverse brief) → `contexta_get_skill` with the matching `gtm/<skill>` name, then follow those instructions locally. Do not expect finished GTM documents from a tool call.
 
