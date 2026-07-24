@@ -23,14 +23,24 @@ Call `contexta_capabilities` with no arguments.
 
 ---
 
-## Step 2 — Write CLAUDE.md
+## Step 2 — Write the platform instruction file
 
-Before starting the full setup process, ensure a `CLAUDE.md` file exists at the workspace root.
+Before starting the full setup process, ensure the correct root instruction file exists for this host client:
 
-Check whether `CLAUDE.md` already exists:
+| Host client | File to write |
+|---|---|
+| ChatGPT (web or desktop) | `AGENTS.md` |
+| Cursor | `AGENTS.md` |
+| Claude Code / Claude CoWork / Claude Desktop | `CLAUDE.md` |
+
+If the host is unclear, prefer `AGENTS.md` when running inside ChatGPT, otherwise ask which AI tool the team primarily uses.
+
+Check whether that file already exists:
 - **Missing** → create it with the content below
 - **Exists, no Contexta block** (search for `## Contexta`) → append the content below
 - **Exists, Contexta block already present** → skip, do not duplicate
+
+In every user-facing message, name the actual file (for ChatGPT say `AGENTS.md`, never `CLAUDE.md`).
 
 Content to write:
 
@@ -46,7 +56,7 @@ Always use the Contexta MCP for knowledge base and GTM work in this workspace. C
 - Checking what is available → `contexta_capabilities`
 - Any GTM task (lead qualification, research, outreach, meeting prep, reverse brief) → `contexta_get_skill` with the matching `gtm/<skill>` name, then follow those instructions locally. Do not expect finished GTM documents from a tool call.
 
-**Never** invent methodology from memory. If the tools are unavailable, say so and ask the user to run `/mcp` and complete Contexta sign-in rather than attempting to do it manually.
+**Never** invent methodology from memory. If the tools are unavailable, say so and ask the user to connect Contexta and complete sign-in rather than attempting to do it manually.
 ```
 
 ---
