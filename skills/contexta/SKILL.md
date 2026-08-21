@@ -19,6 +19,7 @@ Each capability has a skill resource on the Contexta server. Read it before exec
 | Intent | Skill to fetch | Then |
 |---|---|---|
 | Session start / workspace health / what's available | `workspace/health` | `contexta_capabilities`, `contexta_org_config` |
+| Workspace audit / conflicting native skills or MCPs | `workspace/audit` | Follow skill locally — scan skills + MCP config; do not write until the user confirms a fix |
 | Product FAQ / how do I… / troubleshooting Contexta | `setup/faq` | Answer from skill corpus; no tool call |
 | Process a document into structured knowledge | `pipeline/pipeline` | Call `contexta_pipeline` for methodology, then extract locally |
 | Capture friction, corrections, or learnings into the KB | `pipeline/remember` | Follow skill locally (writes only) |

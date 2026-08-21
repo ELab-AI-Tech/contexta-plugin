@@ -41,6 +41,7 @@ set up Contexta
 | Skill | Trigger | What it does |
 |---|---|---|
 | `setup` | "set up Contexta", "set up my knowledge base", "/setup" | Verifies the MCP connection, then fetches and follows the full workspace setup process from the server |
+| `audit` | "/audit", "workspace audit", conflicting skills or MCPs | Fetches `workspace/audit` and scans native skills plus MCP config for collisions with Contexta |
 | `faq` | FAQ, help, how do I install/connect/sign in, troubleshooting | Fetches `setup/faq` from the server and answers from the product FAQ corpus |
 | `contexta` | Any knowledge base, GTM, brand voice, or document operation | Routes to the right server skill via `contexta_get_skill`, then applies methodology locally |
 
