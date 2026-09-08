@@ -1,0 +1,21 @@
+name: Lint customer copy
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  banned-strings:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail on slash commands and support mailbox in customer copy
+        run: |
+          set -euo pipefail
+          # Slash commands only — do not match skill names like workspace/audit
+          # or the hosted URL https://aios.elab.co.nz/mcp.
+          if grep -rnE '(^|[^[:alnum:]])\/(mcp|audit)([^[:alnum:]_-]|$)|support@' skills/ README.md; then
+            echo "Banned customer-facing copy found."
+            exit 1
+          fi
