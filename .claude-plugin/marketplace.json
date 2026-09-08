@@ -12,7 +12,7 @@
       "name": "contexta",
       "description": "Contexta — knowledge base, GTM pipeline, brand voice, and document formatting powered by ELab's hosted MCP server.",
       "source": "./",
-      "version": "2.1.0",
+      "version": "2.2.0",
       "strict": true,
       "author": {
         "name": "ELab"

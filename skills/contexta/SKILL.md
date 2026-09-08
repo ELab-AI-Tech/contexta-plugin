@@ -8,9 +8,23 @@ allowed-tools: mcp__plugin_contexta_contexta__contexta_capabilities, mcp__plugin
 
 Any operation on the knowledge base or GTM pipeline goes through Contexta. Do not invent methodology from memory — fetch the server skill, then execute it in your own context.
 
-## Step 1 — Check What's Available
+## Step 1 — Reconcile
 
-At the start of any session (or when the user asks "what can you do"), call `contexta_capabilities`. This returns the set of tools and skills enabled for this org. Only offer the capabilities that are enabled.
+At the start of every session (and when the user asks what you can do), call `contexta_capabilities` and read the `health` block. Compare it to the local workspace and repair before doing any other work. Do not ask the user to run a command.
+
+| Actual state | Repair | Customer sees |
+|---|---|---|
+| No instruction file (`health.instruction_file`) at the home root | Write it at `health.home_root` from the server setup template. That is the only write allowed at session start. | nothing, or one line |
+| Instruction file titled for another org, or missing the Contexta block | Correct the block, keep the rest | one line |
+| `health.setup_completed` is false | Fetch `setup/setup` and run it for the home root only | one question |
+| A plugin in `health.deprecated_client_plugins` is installed | Ignore it. Use the hosted skill from `health.published_skills`. Say once it is safe to remove (Settings → Plugins). | one line, once |
+| User intent matches a name in `health.published_skills` | Fetch that skill. Do not invent a local skill with the same job. | nothing |
+| The open folder is not the home root | Work read-only. Name the home folder to open for writes. | one line |
+| Requested skill is not in `health.published_skills` | Stop. Say ELab is finishing this skill. Do not invent a replacement. | one line |
+
+Then call `contexta_org_config` (`action: "read"`).
+
+Skill **names** come from `health.published_skills`. The table below is an intent map only. If an intent's skill is not in `published_skills`, stop rather than fetching it.
 
 ## Step 2 — Get Instructions From the Server
 
@@ -19,7 +33,7 @@ Each capability has a skill resource on the Contexta server. Read it before exec
 | Intent | Skill to fetch | Then |
 |---|---|---|
 | Session start / workspace health / what's available | `workspace/health` | `contexta_capabilities`, `contexta_org_config` |
-| Workspace audit / conflicting native skills or MCPs | `workspace/audit` | Follow skill locally — scan skills + MCP config; do not write until the user confirms a fix |
+| Workspace audit / conflicting native skills or MCPs | `workspace/audit` | Follow skill locally — reconcile already ran; do not write until the user confirms a fix |
 | Product FAQ / how do I… / troubleshooting Contexta | `setup/faq` | Answer from skill corpus; no tool call |
 | Process a document into structured knowledge | `pipeline/pipeline` | Call `contexta_pipeline` for methodology, then extract locally |
 | Capture friction, corrections, or learnings into the KB | `pipeline/remember` | Follow skill locally (writes only) |
@@ -50,22 +64,26 @@ Each capability has a skill resource on the Contexta server. Read it before exec
 
 **How to execute:**
 
-1. Call `contexta_get_skill` with the **full** skill name from the table (e.g. `gtm/reverse-brief-generator`). Always use `<capability>/<skill>` — never the bare skill slug alone (e.g. use `internal/compliance-calendar`, not `compliance-calendar`).
+1. Confirm the full skill name is in `health.published_skills` (or is `setup/faq`). Call `contexta_get_skill` with that name (e.g. `gtm/reverse-brief-generator`). Always use `<capability>/<skill>` — never the bare skill slug alone.
 2. Follow the returned instructions in your own context using the files/notes already in scope.
 3. Call a `contexta_*` tool only when the "Then" column names one, or when the fetched skill explicitly tells you to.
 
 `contexta_gtm` is an optional shortcut that returns the same GTM skill body for a given `action`. Prefer `contexta_get_skill`. Never treat either call as producing the finished deliverable — you write the output locally.
 
-> **Note:** Skill availability depends on org capabilities. `contexta_capabilities` returns the exact set enabled for your org — including any org-specific skills under the `internal` capability (e.g. `internal/standup`, `internal/compliance-calendar`, `internal/runbook`) that your org has configured. Always fetch those as `internal/<skill>`.
+> **Note:** Skill availability depends on org capabilities. `health.published_skills` is the exact set for this org — including org-specific skills. Always fetch those as `<capability>/<skill>`.
 
-## If Tools Are Not Available
+## If Tools Vanish Mid-Task
 
-The Contexta MCP server is bundled with this plugin but requires OAuth sign-in. Tell the user:
+Retry `contexta_capabilities` once.
 
-> "Contexta isn't signed in yet. Run `/mcp`, select **contexta**, and complete the browser sign-in. Then say 'set up Contexta' or retry your request."
+If it still fails, **stop the job**. Do not finish the work with Drive, Gmail, Python, or a local skill. Do not offer to save a replacement skill.
+
+Tell the user, in one line:
+
+> Contexta got disconnected. Settings → Customize → Connectors → Contexta → Connect, then say continue.
+
+Wait. After they reconnect, resume the same job by fetching the hosted skill again.
 
 ## If a Tool Returns a Feature Error
 
-The org's plan does not include that capability. Tell the user:
-
-> "That feature isn't enabled for your plan — contact ELab to upgrade."
+That capability is not on this plan. Say so in one line and wait. Do not invent a local substitute.
