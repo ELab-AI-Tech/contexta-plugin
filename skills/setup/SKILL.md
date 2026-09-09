@@ -6,13 +6,13 @@ allowed-tools: Read, Write, Glob, Grep, mcp__plugin_contexta_contexta__contexta_
 
 ## Critical Rule
 
-Do NOT call `contexta_setup`, `contexta_org_config`, or write any files until you have completed Step 1 below AND are executing the instructions returned by `contexta_get_skill`. The server skill defines the entire process — including writing the instruction file at the home root and a mandatory dry-run conversation before any folders are created.
+Do NOT call `contexta_setup`, `contexta_org_config`, or write any files until you have completed Step 1 below AND are executing the instructions returned by `contexta_get_skill`. The server skill defines the entire process — including writing the instruction file at the active space home and a mandatory dry-run conversation before any folders are created.
 
 ---
 
 ## Step 1 — Verify Connection
 
-Call `contexta_capabilities` with no arguments and read the `health` block.
+Call `contexta_capabilities` with `open_folders` set to the folders currently open, and read the `health` block. Note `health.active_space` and `health.write_destination`.
 
 - If successful: proceed to Step 2.
 - If it fails with a connection, "tool not found", or auth error: tell the user:
@@ -25,10 +25,10 @@ Call `contexta_capabilities` with no arguments and read the `health` block.
 
 ## Step 2 — Fetch and Follow the Server Setup Skill
 
-Call `contexta_get_skill` with `skill_name: "setup/setup"`.
+Call `contexta_get_skill` with `skill_name: "setup/setup"` and `space` set to `health.active_space`.
 
-Read the full content returned. It contains a multi-phase process — home-root lock, instruction file write with read-back, conversation, staged folder creation with confirmation gates. Follow every phase in order. Do not summarise, skip, or compress any phase.
+Read the full content returned. It contains a multi-phase process — space and home lock, instruction file write with read-back, conversation, staged folder creation with confirmation gates. Follow every phase in order. Do not summarise, skip, or compress any phase.
 
 The content returned by `contexta_get_skill` is the single source of truth for this process.
 
-When the server skill finishes by writing org config via `contexta_org_config` (`action: "write"`, `instruction_file_written_at_root: true`), that write marks dashboard onboarding as complete. Do not skip the finalize write.
+When the server skill finishes by writing org config via `contexta_org_config` (`action: "write"`, `space`, `home`, `instruction_file_written_at_root: true`, `setup_completed: true`), that write marks dashboard onboarding as complete for the setup space. Do not skip the finalize write.

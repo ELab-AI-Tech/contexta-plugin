@@ -6,13 +6,13 @@ allowed-tools: Read, Glob, Grep, mcp__plugin_contexta_contexta__contexta_capabil
 
 ## Critical Rule
 
-Do NOT invent an audit from memory. Fetch `workspace/audit` and follow it. Reconcile already runs at session start. Do not write, rename, or delete files until the user confirms a specific fix after the report, except the instruction file at the home root.
+Do NOT invent an audit from memory. Fetch `workspace/audit` and follow it. Reconcile already runs at session start. Do not write, rename, or delete files until the user confirms a specific fix after the report, except the instruction file at the active space home.
 
 ## Steps
 
-1. Call `contexta_capabilities` with no arguments and read `health`.
+1. Call `contexta_capabilities` with `open_folders` set to the folders currently open, and read `health`.
    - If it fails: tell the user to open Settings → Customize → Connectors → Contexta → Connect, then retry.
-2. Call `contexta_get_skill` with `skill_name: "workspace/audit"`.
+2. Call `contexta_get_skill` with `skill_name: "workspace/audit"` and `space` set to `health.active_space`.
 3. Follow the returned instructions in this workspace (scan native skills and MCP config locally).
 
 The content returned by `contexta_get_skill` is the single source of truth for this audit.
