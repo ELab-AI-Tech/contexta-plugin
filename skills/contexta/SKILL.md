@@ -10,19 +10,22 @@ Any operation on the knowledge base or GTM pipeline goes through Contexta. Do no
 
 ## Step 1 — Reconcile
 
-At the start of every session (and when the user asks what you can do), call `contexta_capabilities` and read the `health` block. Compare it to the local workspace and repair before doing any other work. Do not ask the user to run a command.
+At the start of every session (and when the user asks what you can do), call `contexta_capabilities` with `open_folders` set to the folders currently open. Read the `health` block. State one line: `Using <health.active_space>. Saving to <health.write_destination>.` Compare it to the local workspace and repair before doing any other work. Do not ask the user to run a command.
+
+Pass `space` (the active space slug) on later `contexta_org_config` and `contexta_get_skill` calls.
 
 | Actual state | Repair | Customer sees |
 |---|---|---|
-| No instruction file (`health.instruction_file`) at the home root | Write it at `health.home_root` from the server setup template. That is the only write allowed at session start. | nothing, or one line |
+| No instruction file (`health.instruction_file`) at the active space home | Write it at `health.write_destination` (alias `health.home_root`) from the server setup template. That is the only write allowed at session start. | nothing, or one line |
 | Instruction file titled for another org, or missing the Contexta block | Correct the block, keep the rest | one line |
-| `health.setup_completed` is false | Fetch `setup/setup` and run it for the home root only | one question |
+| `health.setup_completed` is false for the active space | Fetch `setup/setup` and run it for that space home only | one question |
 | A plugin in `health.deprecated_client_plugins` is installed | Ignore it. Use the hosted skill from `health.published_skills`. Say once it is safe to remove (Settings → Plugins). | one line, once |
 | User intent matches a name in `health.published_skills` | Fetch that skill. Do not invent a local skill with the same job. | nothing |
-| The open folder is not the home root | Work read-only. Name the home folder to open for writes. | one line |
+| Open folder matches another space's home | Announce the switch. Start a fresh context for that space. Do not mix writes. | one line |
+| The open folder does not match any space home | Work read-only. Ask once which space this folder belongs to. | one line |
 | Requested skill is not in `health.published_skills` | Stop. Say ELab is finishing this skill. Do not invent a replacement. | one line |
 
-Then call `contexta_org_config` (`action: "read"`).
+Then call `contexta_org_config` (`action: "read"`, `space` = active space slug).
 
 Skill **names** come from `health.published_skills`. The table below is an intent map only. If an intent's skill is not in `published_skills`, stop rather than fetching it.
 
@@ -64,7 +67,7 @@ Each capability has a skill resource on the Contexta server. Read it before exec
 
 **How to execute:**
 
-1. Confirm the full skill name is in `health.published_skills` (or is `setup/faq`). Call `contexta_get_skill` with that name (e.g. `gtm/reverse-brief-generator`). Always use `<capability>/<skill>` — never the bare skill slug alone.
+1. Confirm the full skill name is in `health.published_skills` (or is `setup/faq`). Call `contexta_get_skill` with that name (e.g. `gtm/reverse-brief-generator`) and `space` set to the active space slug. Always use `<capability>/<skill>` — never the bare skill slug alone.
 2. Follow the returned instructions in your own context using the files/notes already in scope.
 3. Call a `contexta_*` tool only when the "Then" column names one, or when the fetched skill explicitly tells you to.
 
