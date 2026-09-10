@@ -31,4 +31,4 @@ Read the full content returned. It contains a multi-phase process — space and 
 
 The content returned by `contexta_get_skill` is the single source of truth for this process.
 
-When the server skill finishes by writing org config via `contexta_org_config` (`action: "write"`, `space`, `home`, `instruction_file_written_at_root: true`, `setup_completed: true`), that write marks dashboard onboarding as complete for the setup space. Do not skip the finalize write.
+When the server skill finishes by writing org config via `contexta_org_config` (`action: "write"`, `space`, `home`, `rules` for organisation identity/storage/naming/anti-patterns, `space_rules` for this space's folder tree and pipeline routing, `instruction_file_written_at_root: true`, `setup_completed: true`), that write marks dashboard onboarding as complete for the setup space. Do not skip the finalize write.
