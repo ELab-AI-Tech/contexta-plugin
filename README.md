@@ -28,7 +28,7 @@ Then connect: Settings → Customize → Connectors → Contexta → Connect. Si
 | `setup` | "set up Contexta", "set up my knowledge base" | Verifies the MCP connection, then fetches and follows the full workspace setup process from the server |
 | `audit` | "workspace audit", conflicting skills or MCPs | Alias — reconcile already runs at session start; fetches `workspace/audit` if you ask |
 | `faq` | FAQ, help, how do I install/connect/sign in, troubleshooting | Fetches `setup/faq` from the server and answers from the product FAQ corpus |
-| `contexta` | Any knowledge base, GTM, brand voice, or document operation | Reconciles health, routes to the right server skill via `contexta_get_skill`, then applies methodology locally |
+| `contexta` | Any knowledge base, GTM, brand voice, document, estimate, spreadsheet, proposal, or deck operation | Reconciles health, matches the job to `health.skill_catalog`, fetches that skill via `contexta_get_skill` before building, then applies methodology locally |
 
 Capability-specific instructions (pipeline, brand voice, GTM, format, governance, etc.) live on the server and are fetched on demand — they are not shipped in this plugin.
 

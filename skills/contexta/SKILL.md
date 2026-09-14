@@ -1,6 +1,6 @@
 ---
 name: contexta
-description: Route all knowledge base, GTM, brand voice, and document operations through Contexta. Any time the user creates, processes, queries, archives, exports, or styles a document — or runs any GTM pipeline step — read the relevant Contexta skill resource for instructions, then apply them locally (and call a contexta_* tool only when the table says to). Never handle knowledge base content or GTM steps from memory. Triggers on any file, document, or GTM operation in the workspace.
+description: Route all knowledge base, GTM, brand voice, and document operations through Contexta. Any time the user creates, processes, queries, archives, exports, or styles a document — or produces an estimate, quote, proposal, brief, deck, spreadsheet, or any client-facing deliverable — or runs any GTM pipeline step — call contexta_capabilities, fetch the matching skill from health.skill_catalog, then apply it locally. Never handle that work from memory or from Drive/xlsx alone. Triggers on any file, document, estimate, spreadsheet, proposal, deck, or GTM operation.
 allowed-tools: mcp__plugin_contexta_contexta__contexta_capabilities, mcp__plugin_contexta_contexta__contexta_get_skill, mcp__plugin_contexta_contexta__contexta_org_config, mcp__plugin_contexta_contexta__contexta_pipeline, mcp__plugin_contexta_contexta__contexta_brand_voice, mcp__plugin_contexta_contexta__contexta_format, mcp__plugin_contexta_contexta__contexta_gtm, mcp__plugin_contexta_contexta__contexta_governance, mcp__plugin_contexta_contexta__contexta_setup, mcp__contexta__contexta_capabilities, mcp__contexta__contexta_get_skill, mcp__contexta__contexta_org_config, mcp__contexta__contexta_pipeline, mcp__contexta__contexta_brand_voice, mcp__contexta__contexta_format, mcp__contexta__contexta_gtm, mcp__contexta__contexta_governance, mcp__contexta__contexta_setup
 ---
 
@@ -20,6 +20,7 @@ Pass `space` (the active space slug) on later `contexta_org_config` and `context
 | Instruction file titled for another org, or missing the Contexta block | Correct the block, keep the rest | one line |
 | `health.setup_completed` is false for the active space | Fetch `setup/setup` and run it for that space home only | one question |
 | A plugin in `health.deprecated_client_plugins` is installed | Ignore it. Use the hosted skill from `health.published_skills`. Say once it is safe to remove (Settings → Plugins). | one line, once |
+| User intent matches a `health.skill_catalog` entry | Fetch that skill with `contexta_get_skill` before any other tool. Org-specific entries win over generic. | nothing |
 | User intent matches a name in `health.published_skills` | Fetch that skill. Do not invent a local skill with the same job. | nothing |
 | Open folder matches another space's home | Announce the switch. Start a fresh context for that space. Do not mix writes. | one line |
 | The open folder does not match any space home | Work read-only. Ask once which space this folder belongs to. | one line |
@@ -27,11 +28,17 @@ Pass `space` (the active space slug) on later `contexta_org_config` and `context
 
 Then call `contexta_org_config` (`action: "read"`, `space` = active space slug).
 
-Skill **names** come from `health.published_skills`. The table below is an intent map only. If an intent's skill is not in `published_skills`, stop rather than fetching it.
+## Before any deliverable
+
+Before writing or building a client-facing file (estimate, brief, proposal, deck, spreadsheet, document, outreach), you must have fetched a matching `health.skill_catalog` entry with `contexta_get_skill` in this session. Org-specific catalog entries win over the intent table below.
+
+If nothing in the catalog covers the job, stop. Say no published skill covers this, and ask before building from scratch. Never fall back to Drive templates, Python, or general spreadsheet/document skills when a catalog entry covers the job.
+
+Skill **names** come from `health.published_skills`. `health.skill_catalog` is the routing list (name, summary, triggers). The table below is an intent map only. If an intent's skill is not in `published_skills`, stop rather than fetching it.
 
 ## Step 2 — Get Instructions From the Server
 
-Each capability has a skill resource on the Contexta server. Read it before executing using `contexta_get_skill`. Skill names use the format `<capability>/<skill>`:
+Each capability has a skill resource on the Contexta server. Read it before executing using `contexta_get_skill`. Skill names use the format `<capability>/<skill>`. The generic GTM rows apply only when `health.skill_catalog` has no org-specific skill for the same job:
 
 | Intent | Skill to fetch | Then |
 |---|---|---|
@@ -73,7 +80,7 @@ Each capability has a skill resource on the Contexta server. Read it before exec
 
 `contexta_gtm` is an optional shortcut that returns the same GTM skill body for a given `action`. Prefer `contexta_get_skill`. Never treat either call as producing the finished deliverable — you write the output locally.
 
-> **Note:** Skill availability depends on org capabilities. `health.published_skills` is the exact set for this org — including org-specific skills. Always fetch those as `<capability>/<skill>`.
+> **Note:** Skill availability depends on org capabilities. `health.published_skills` is the exact set for this org — including org-specific skills. `health.skill_catalog` is how you match the user's job to those names. Always fetch as `<capability>/<skill>`.
 
 ## If Tools Vanish Mid-Task
 
