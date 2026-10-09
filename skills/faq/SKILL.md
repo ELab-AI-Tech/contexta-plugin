@@ -12,6 +12,6 @@ Do not invent product guidance from memory. Fetch the server FAQ skill and answe
 
 1. Call `contexta_get_skill` with `skill_name: "setup/faq"`.
 2. Read the returned corpus and answer the user's question from the closest matching Q&A.
-3. If nothing matches, say so and point them to `https://contexta.elab.co.nz/faq`, or ask ELab in your shared channel.
+3. If nothing matches, say so and point them to `https://contexta.elab.co.nz/faq`, or ask in your shared channel.
 
 `setup/faq` is always available for authenticated orgs — it does not require the setup capability grant.

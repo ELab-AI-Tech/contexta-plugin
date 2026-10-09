@@ -1,8 +1,8 @@
 # Contexta Plugin
 
-**The client-facing Claude Code plugin for ELab Contexta.**
+**The client-facing Claude Code plugin for Contexta.**
 
-This plugin connects your AI agent to ELab's hosted capabilities server — giving you document processing, brand voice, formatting, and GTM tools powered by ELab's methodology, without any implementation leaving ELab's servers.
+This plugin connects your AI agent to Contexta's hosted capabilities server. It gives you document processing, brand voice, formatting, and GTM tools, without any implementation leaving Contexta's servers.
 
 ---
 
@@ -17,7 +17,7 @@ Then connect: Settings → Customize → Connectors → Contexta → Connect. Si
 ## What You Need
 
 - Claude (CoWork or Code) with plugin support
-- An ELab Contexta account (sign in through Connectors when prompted)
+- A Contexta account (sign in through Connectors when prompted)
 
 ---
 
@@ -36,14 +36,14 @@ Capability-specific instructions (pipeline, brand voice, GTM, format, governance
 
 ## How It Works
 
-This plugin contains only orchestration skills — no ELab methodology or processing logic is stored here. When you ask Claude to process a document, the plugin instructs Claude to:
+This plugin contains only orchestration skills. No methodology or processing logic is stored here. When you ask Claude to process a document, the plugin instructs Claude to:
 
 1. Call `contexta_get_skill` for the relevant skill (e.g. `pipeline/pipeline`)
 2. Follow the returned instructions in its own context
 3. Call a `contexta_*` tool only when the skill says to (methodology stays on the server)
 4. Write results to your local knowledge base
 
-The extraction logic, brand voice guidelines, quality rules, and ELab methodology run entirely on ELab's server and are never exposed to the client.
+The extraction logic, brand voice guidelines, and quality rules run entirely on Contexta's server and are never exposed to the client.
 
 ---
 
@@ -77,7 +77,7 @@ Archive/           ← processed source documents
 
 ## Support
 
-Ask ELab in your shared channel for account access, capability upgrades, or onboarding support. Product help: https://contexta.elab.co.nz/faq
+Ask in your shared channel for account access, capability upgrades, or onboarding support. Product help: https://contexta.elab.co.nz/faq
 
 ## Releases
 

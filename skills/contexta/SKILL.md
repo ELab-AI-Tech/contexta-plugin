@@ -24,7 +24,7 @@ Pass `space` (the active space slug) on later `contexta_org_config` and `context
 | User intent matches a name in `health.published_skills` | Fetch that skill. Do not invent a local skill with the same job. | nothing |
 | Open folder matches another space's home | Announce the switch. Start a fresh context for that space. Do not mix writes. | one line |
 | The open folder does not match any space home | Work read-only. Ask once which space this folder belongs to. | one line |
-| Requested skill is not in `health.published_skills` | Stop. Say ELab is finishing this skill. Do not invent a replacement. | one line |
+| Requested skill is not in `health.published_skills` | Stop. Say Contexta is finishing this skill. Do not invent a replacement. | one line |
 
 Then call `contexta_org_config` (`action: "read"`, `space` = active space slug).
 
