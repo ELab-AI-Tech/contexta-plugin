@@ -6,7 +6,7 @@ allowed-tools: Read, Write, Glob, Grep, mcp__plugin_contexta_contexta__contexta_
 
 ## Critical Rule
 
-Do NOT call `contexta_setup`, `contexta_org_config`, or write any files until you have completed Step 1 below AND are executing the instructions returned by `contexta_get_skill`. The server skill defines the entire process — including writing the instruction file at the active space home and a mandatory dry-run conversation before any folders are created.
+Do NOT call `contexta_setup`, `contexta_org_config`, or write any files until you have completed Step 1 below AND are executing the instructions returned by `contexta_get_skill`. The server skill defines the entire process, including writing the instruction file at the top of the folder open in this chat, never inside a context folder, and a mandatory dry-run conversation before any folders are created.
 
 ---
 

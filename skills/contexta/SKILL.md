@@ -16,7 +16,7 @@ Pass `space` (the active space slug) on later `contexta_org_config` and `context
 
 | Actual state | Repair | Customer sees |
 |---|---|---|
-| No instruction file (`health.instruction_file`) at the active space home | Write it at `health.write_destination` (alias `health.home_root`) from the server setup template. That is the only write allowed at session start. | nothing, or one line |
+| No instruction file (`health.instruction_file`) at the top of the folder open in this chat | Write it there, as a direct child of that folder, from the server setup template. Never inside a context folder or any other subfolder. If the only copy is inside a subfolder, move it to that open-folder root and do not leave the copy. Knowledge files still go to `health.write_destination` (alias `health.home_root`). That is the only write allowed at session start. | nothing, or one line |
 | Instruction file titled for another org, or missing the Contexta block | Correct the block, keep the rest | one line |
 | `health.setup_completed` is false for the active space | Fetch `setup/setup` and run it for that space home only | one question |
 | A plugin in `health.deprecated_client_plugins` is installed | Ignore it. Use the hosted skill from `health.published_skills`. Say once it is safe to remove (Settings → Plugins). | one line, once |

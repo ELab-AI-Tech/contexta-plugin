@@ -6,7 +6,7 @@ allowed-tools: Read, Glob, Grep, mcp__plugin_contexta_contexta__contexta_capabil
 
 ## Critical Rule
 
-Do NOT invent an audit from memory. Fetch `workspace/audit` and follow it. Reconcile already runs at session start. Do not write, rename, or delete files until the user confirms a specific fix after the report, except the instruction file at the active space home.
+Do NOT invent an audit from memory. Fetch `workspace/audit` and follow it. Reconcile already runs at session start. Do not write, rename, or delete files until the user confirms a specific fix after the report, except the instruction file at the top of the folder open in this chat. Never put it inside a context folder. If the only copy is inside a subfolder, move it to that open-folder root and do not leave the copy.
 
 ## Steps
 
