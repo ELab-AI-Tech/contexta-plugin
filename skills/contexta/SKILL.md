@@ -1,7 +1,7 @@
 ---
 name: contexta
 description: Route all knowledge base, GTM, brand voice, and document operations through Contexta. Any time the user creates, processes, queries, archives, exports, or styles a document — or produces an estimate, quote, proposal, brief, deck, spreadsheet, or any client-facing deliverable — or runs any GTM pipeline step — call contexta_capabilities, fetch the matching skill from health.skill_catalog, then apply it locally. Never handle that work from memory or from Drive/xlsx alone. Triggers on any file, document, estimate, spreadsheet, proposal, deck, or GTM operation.
-allowed-tools: mcp__plugin_contexta_contexta__contexta_capabilities, mcp__plugin_contexta_contexta__contexta_get_skill, mcp__plugin_contexta_contexta__contexta_org_config, mcp__plugin_contexta_contexta__contexta_pipeline, mcp__plugin_contexta_contexta__contexta_brand_voice, mcp__plugin_contexta_contexta__contexta_format, mcp__plugin_contexta_contexta__contexta_gtm, mcp__plugin_contexta_contexta__contexta_governance, mcp__plugin_contexta_contexta__contexta_setup, mcp__contexta__contexta_capabilities, mcp__contexta__contexta_get_skill, mcp__contexta__contexta_org_config, mcp__contexta__contexta_pipeline, mcp__contexta__contexta_brand_voice, mcp__contexta__contexta_format, mcp__contexta__contexta_gtm, mcp__contexta__contexta_governance, mcp__contexta__contexta_setup
+allowed-tools: mcp__plugin_contexta_contexta__contexta_capabilities, mcp__plugin_contexta_contexta__contexta_get_skill, mcp__plugin_contexta_contexta__contexta_org_config, mcp__plugin_contexta_contexta__contexta_pipeline, mcp__plugin_contexta_contexta__contexta_brand_voice, mcp__plugin_contexta_contexta__contexta_format, mcp__plugin_contexta_contexta__contexta_gtm, mcp__plugin_contexta_contexta__contexta_governance, mcp__plugin_contexta_contexta__contexta_setup, mcp__contexta__contexta_capabilities, mcp__contexta__contexta_get_skill, mcp__contexta__contexta_org_config, mcp__contexta__contexta_pipeline, mcp__contexta__contexta_brand_voice, mcp__contexta__contexta_format, mcp__contexta__contexta_gtm, mcp__contexta__contexta_governance, mcp__contexta__contexta_setup, mcp__plugin_contexta_contexta__contexta_manage_skills, mcp__contexta__contexta_manage_skills
 ---
 
 ## Rule
@@ -96,4 +96,6 @@ Wait. After they reconnect, resume the same job by fetching the hosted skill aga
 
 ## If a Tool Returns a Feature Error
 
-That capability is not on this plan. Say so in one line and wait. Do not invent a local substitute.
+If the error names a capability this organisation does not have, and the work is specific to this organisation, create it with `contexta_manage_skills`: `action=create_capability`, `capability` set to a kebab-case slug, and a one-line `description`. That capability belongs only to this organisation. Then create the skill with `action=create`. Do this only when an admin or editor is signed in.
+
+A product capability that is not on this plan cannot be created that way. Say so in one line and wait. Do not invent a local substitute.
