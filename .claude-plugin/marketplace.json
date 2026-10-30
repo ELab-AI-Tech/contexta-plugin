@@ -12,7 +12,7 @@
       "name": "contexta",
       "description": "Contexta — knowledge base, GTM pipeline, brand voice, and document formatting from the hosted MCP server.",
       "source": "./",
-      "version": "2.4.1",
+      "version": "2.4.2",
       "strict": true,
       "author": {
         "name": "Contexta"

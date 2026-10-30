@@ -10,7 +10,11 @@ Any operation on the knowledge base or GTM pipeline goes through Contexta. Do no
 
 ## Step 1 — Reconcile
 
-At the start of every session (and when the user asks what you can do), call `contexta_capabilities` with `open_folders` set to the folders currently open. Read the `health` block. State one line: `Using <health.active_space>. Saving to <health.write_destination>.` Compare it to the local workspace and repair before doing any other work. Do not ask the user to run a command.
+At the start of every session (and when the user asks what you can do), call `contexta_capabilities` with `open_folders` set to the folders currently open. Do this before anything else in the session, even if the user has not mentioned Contexta. Read the `health` block. State one line, using the response's top-level `name`: `Connected to Contexta for <name>. Using <health.active_space>. Saving to <health.write_destination>.` That line is how the user knows setup points at the right organisation; if they say it's the wrong one, stop and tell them to reconnect Contexta with the right work email. Compare it to the local workspace and repair before doing any other work. Do not ask the user to run a command.
+
+If `contexta_capabilities` is not available in this chat, or fails twice, make no workspace writes. Tell the user in one line:
+
+> Contexta isn't connected in this chat. Settings → Customize → Connectors → Contexta → Connect, then start a new chat.
 
 Pass `space` (the active space slug) on later `contexta_org_config` and `contexta_get_skill` calls.
 
