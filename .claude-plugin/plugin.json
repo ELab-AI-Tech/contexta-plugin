@@ -1,19 +1,20 @@
 {
   "name": "contexta",
-  "version": "2.4.2",
-  "description": "Contexta — AI capabilities platform. Document processing, brand voice, formatting, and GTM tools from the hosted MCP server.",
+  "version": "2.5.0",
+  "description": "Contexta connects Claude to your company brain and agent skills, so work follows how your business does it.",
   "author": {
-    "name": "Contexta"
+    "name": "Contexta",
+    "url": "https://getcontexta.ai"
   },
-  "homepage": "https://contexta.elab.co.nz",
+  "homepage": "https://getcontexta.ai",
   "repository": "https://github.com/ELab-AI-Tech/contexta-plugin",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "keywords": [
-    "document-processing",
-    "knowledge-management",
-    "brand-voice",
-    "gtm",
-    "mcp"
+    "company-context",
+    "knowledge-base",
+    "agent-skills",
+    "skills",
+    "productivity"
   ],
   "mcpServers": "./.mcp.json"
 }

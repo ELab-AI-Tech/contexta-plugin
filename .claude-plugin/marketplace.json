@@ -2,30 +2,32 @@
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "ELab-AI-Tech",
   "owner": {
-    "name": "Contexta"
+    "name": "Contexta",
+    "url": "https://getcontexta.ai"
   },
   "metadata": {
-    "description": "Contexta — AI capabilities platform. Knowledge base management, GTM pipeline, brand voice, and document formatting from the hosted MCP server."
+    "description": "The Contexta plugin for Claude: your company brain and agent skills in every chat."
   },
   "plugins": [
     {
       "name": "contexta",
-      "description": "Contexta — knowledge base, GTM pipeline, brand voice, and document formatting from the hosted MCP server.",
+      "description": "Contexta connects Claude to your company brain and agent skills, so work follows how your business does it.",
       "source": "./",
-      "version": "2.4.2",
+      "version": "2.5.0",
       "strict": true,
       "author": {
-        "name": "Contexta"
+        "name": "Contexta",
+        "url": "https://getcontexta.ai"
       },
-      "homepage": "https://contexta.elab.co.nz",
+      "homepage": "https://getcontexta.ai",
       "repository": "https://github.com/ELab-AI-Tech/contexta-plugin",
-      "license": "UNLICENSED",
+      "license": "MIT",
       "keywords": [
-        "document-processing",
-        "knowledge-management",
-        "brand-voice",
-        "gtm",
-        "mcp"
+        "company-context",
+        "knowledge-base",
+        "agent-skills",
+        "skills",
+        "productivity"
       ],
       "category": "productivity"
     }
