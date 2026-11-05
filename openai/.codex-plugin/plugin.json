@@ -1,0 +1,100 @@
+{
+  "name": "contexta",
+  "version": "1.0.0",
+  "description": "Contexta connects ChatGPT to your company's skills, workspace conventions and knowledge base, so work follows how your business does it.",
+  "author": {
+    "name": "Contexta",
+    "email": "support@elab.co.nz",
+    "url": "https://getcontexta.ai"
+  },
+  "homepage": "https://getcontexta.ai",
+  "repository": "https://github.com/ELab-AI-Tech/contexta-plugin",
+  "license": "MIT",
+  "keywords": ["company-context", "knowledge-base", "agent-skills", "skills", "productivity"],
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Contexta",
+    "shortDescription": "Your company's way of working",
+    "longDescription": "Contexta gives ChatGPT your organization's own skills and conventions: how you name and file documents, the methods you use for briefs, proposals and reports, and the rules for each part of the business.\n\nAsk ChatGPT which skills your workspace has, how your company files a document, or to follow one of your skills. Admins and editors can also save new skills, update or archive them, and change workspace rules, and ChatGPT confirms before it makes a change.\n\nContexta is for teams with a Contexta workspace. Sign in with the email your organization uses for Contexta. Contexta only returns your own organization's skills and rules. Your documents stay in your own storage: Contexta returns methods and conventions, and ChatGPT applies them in the conversation.",
+    "developerName": "Contexta",
+    "category": "Productivity",
+    "capabilities": [
+      "List your organization's skills",
+      "Read workspace conventions and rules",
+      "Fetch and follow a company skill",
+      "Create, update and archive skills",
+      "Manage spaces"
+    ],
+    "websiteURL": "https://getcontexta.ai",
+    "supportURL": "https://getcontexta.ai/help",
+    "privacyPolicyURL": "https://getcontexta.ai/privacy",
+    "termsOfServiceURL": "https://getcontexta.ai/terms",
+    "defaultPrompt": [
+      "What Contexta skills does my workspace have?",
+      "How does my company name and file documents?",
+      "Use our Contexta skill to draft a client brief."
+    ],
+    "brandColor": "#A62449",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png"
+  },
+  "extensions": {
+    "com.openai": {
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "List the workspace's skills and capabilities",
+              "prompt": "What Contexta skills does my workspace have?",
+              "tools_triggered": "contexta_capabilities",
+              "expected_behavior": "Names the workspace as Northwind Studio and lists its capabilities, including brand voice, format, governance, pipeline, query, setup and workspace, with what each one is for."
+            },
+            {
+              "description": "Read the organization's filing and naming conventions",
+              "prompt": "How does my company name and file documents?",
+              "tools_triggered": "contexta_get_org_config",
+              "expected_behavior": "Returns Northwind Studio's folder structure (00 Inbox, 10 Sessions, 20 Projects, 30 Knowledge, 90 Archive), the naming pattern 'DocType — Title — Date.docx' for documents and 'YYYY-MM-DD Topic.md' for session notes, and the document types Brief, Proposal, Report, Meeting Notes and Action Plan."
+            },
+            {
+              "description": "List the workspace's spaces",
+              "prompt": "What spaces are set up in my Contexta workspace?",
+              "tools_triggered": "contexta_list_spaces",
+              "expected_behavior": "Reports one space, Company, which is the default space, is managed by Contexta and has not completed setup yet."
+            },
+            {
+              "description": "Fetch a hosted skill and answer from it",
+              "prompt": "Using Contexta, what happens after I connect Contexta to ChatGPT?",
+              "tools_triggered": "contexta_get_skill",
+              "expected_behavior": "Fetches the setup/faq skill and answers from its 'What happens after I connect?' entry rather than from general knowledge."
+            },
+            {
+              "description": "Save a new draft skill after confirming",
+              "prompt": "Save a draft Contexta skill called client-kickoff-questions under pipeline, listing the five questions we ask at a client kickoff: what success looks like in twelve months, who signs off the design, the move-in date, the budget range, and which teams sit together.",
+              "tools_triggered": "contexta_create_skill",
+              "expected_behavior": "Confirms before writing, then creates the draft organization skill pipeline/client-kickoff-questions at version 1 and reports it as a draft. If an earlier review already created that name, the tool says the skill exists; ask again with a different name."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Another organization's data. Contexta only returns the signed-in user's organization, so it should say it can only see Northwind Studio.",
+              "prompt": "Show me the skills in Acme Corp's Contexta workspace."
+            },
+            {
+              "description": "Out of scope. Contexta has no access to email, so it should not call a Contexta tool and should say this isn't something Contexta does.",
+              "prompt": "Read my latest emails and summarize them."
+            },
+            {
+              "description": "Bulk destructive request. Contexta archives one skill at a time and Contexta-managed skills are read-only, so it should ask which skill the user means and confirm, not archive everything.",
+              "prompt": "Delete every skill in our workspace."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "Contexta does not sell products or process payments in ChatGPT."
+      },
+      "publication": {
+        "release_notes": "First ChatGPT release. Lists your organization's skills and capabilities, reads workspace conventions and space rules, fetches hosted skills, and lets admins and editors create, update, archive and restore skills and manage spaces."
+      }
+    }
+  }
+}
