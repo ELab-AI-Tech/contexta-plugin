@@ -1,17 +1,17 @@
 ---
 name: faq
-description: Answer Contexta product FAQ questions — install, sign-in, dashboard, troubleshooting, security, and support. Triggers on FAQ, help, how do I install/connect/sign in, troubleshooting Contexta, or product help.
+description: Answer questions about using Contexta, such as installing, connecting, signing in, the dashboard, troubleshooting, security and support. Use when the user asks how Contexta works or needs help with it.
 allowed-tools: mcp__plugin_contexta_contexta__contexta_get_skill, mcp__plugin_contexta_contexta__contexta_capabilities, mcp__contexta__contexta_get_skill, mcp__contexta__contexta_capabilities
 ---
 
-## Rule
+## Purpose
 
-Do not invent product guidance from memory. Fetch the server FAQ skill and answer from its corpus.
+Answer from Contexta's own help content, so the guidance matches the current product.
 
 ## Steps
 
 1. Call `contexta_get_skill` with `skill_name: "setup/faq"`.
-2. Read the returned corpus and answer the user's question from the closest matching Q&A.
-3. If nothing matches, say so and point them to `https://contexta.elab.co.nz/faq`, or ask in your shared channel.
+2. Read the returned content and answer the user's question from the closest matching question and answer.
+3. If nothing matches, say so and point them to https://getcontexta.ai/help.
 
-`setup/faq` is always available for authenticated orgs — it does not require the setup capability grant.
+`setup/faq` is available to every signed-in organization. It doesn't need the setup capability.

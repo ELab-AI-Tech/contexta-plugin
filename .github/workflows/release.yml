@@ -40,6 +40,7 @@ jobs:
             .mcp.json \
             skills/ \
             README.md \
+            LICENSE \
             -x "*.DS_Store" "*/.DS_Store"
 
       - name: Create release with zip

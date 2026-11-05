@@ -1,34 +1,28 @@
 ---
 name: setup
-description: Set up the Contexta knowledge base in this workspace. Verifies the MCP connection, fetches the full setup process from the Contexta server, then follows it step by step. Triggers on "set up my knowledge base", "initialise my workspace", "help me get started", "create my vault".
-allowed-tools: Read, Write, Glob, Grep, mcp__plugin_contexta_contexta__contexta_capabilities, mcp__plugin_contexta_contexta__contexta_get_skill, mcp__plugin_contexta_contexta__contexta_org_config, mcp__plugin_contexta_contexta__contexta_setup, mcp__contexta__contexta_capabilities, mcp__contexta__contexta_get_skill, mcp__contexta__contexta_org_config, mcp__contexta__contexta_setup
+description: Set up a Contexta workspace in the folder open in this chat. Checks the Contexta connection, fetches the setup steps from the Contexta server and follows them, confirming with the user before creating folders. Use when the user says "set up Contexta", "set up my knowledge base", "initialize my workspace" or "help me get started with Contexta".
+allowed-tools: Read, Write, Glob, Grep, mcp__plugin_contexta_contexta__contexta_capabilities, mcp__plugin_contexta_contexta__contexta_get_skill, mcp__plugin_contexta_contexta__contexta_get_org_config, mcp__plugin_contexta_contexta__contexta_update_org_config, mcp__plugin_contexta_contexta__contexta_setup, mcp__contexta__contexta_capabilities, mcp__contexta__contexta_get_skill, mcp__contexta__contexta_get_org_config, mcp__contexta__contexta_update_org_config, mcp__contexta__contexta_setup
 ---
 
-## Critical Rule
+## Order of Steps
 
-Do NOT call `contexta_setup`, `contexta_org_config`, or write any files until you have completed Step 1 below AND are executing the instructions returned by `contexta_get_skill`. The server skill defines the entire process, including writing the instruction file at the top of the folder open in this chat, never inside a context folder, and a mandatory dry-run conversation before any folders are created.
+Complete Step 1 before calling `contexta_setup` or `contexta_update_org_config`, or writing any files. The server's setup skill defines the process: it writes the instruction file at the top of the folder open in this chat (never inside a context folder), and talks the plan through with the user before any folders are created.
 
----
-
-## Step 1 — Verify Connection
+## Step 1: Check the Connection
 
 Call `contexta_capabilities` with `open_folders` set to the folders currently open, and read the `health` block. Note `health.active_space` and `health.write_destination`.
 
-- If successful: proceed to Step 2.
-- If it fails with a connection, "tool not found", or auth error: tell the user:
+- If it succeeds, go to Step 2.
+- If it fails with a connection, "tool not found" or sign-in error, tell the user:
 
   > Contexta isn't signed in yet. Settings → Customize → Connectors → Contexta → Connect, then say continue.
 
-  Do not proceed until `contexta_capabilities` succeeds. Do not write an instruction file from this client skill.
+  Wait until `contexta_capabilities` succeeds. Don't write an instruction file from this skill.
 
----
-
-## Step 2 — Fetch and Follow the Server Setup Skill
+## Step 2: Fetch and Follow the Server Setup Skill
 
 Call `contexta_get_skill` with `skill_name: "setup/setup"` and `space` set to `health.active_space`.
 
-Read the full content returned. It contains a multi-phase process — space and home lock, instruction file write with read-back, conversation, staged folder creation with confirmation gates. Follow every phase in order. Do not summarise, skip, or compress any phase.
+The returned content is a multi-phase process: lock the space and its home, write the instruction file and read it back, talk it through with the user, then create folders in stages with the user's confirmation at each stage. Follow the phases in order without skipping or compressing any.
 
-The content returned by `contexta_get_skill` is the single source of truth for this process.
-
-When the server skill finishes by writing org config via `contexta_org_config` (`action: "write"`, `space`, `home`, `rules` for organisation identity/storage/naming/anti-patterns, `space_rules` for this space's folder tree and pipeline routing, `instruction_file_written_at_root: true`, `setup_completed: true`), that write marks dashboard onboarding as complete for the setup space. Do not skip the finalize write.
+The server skill finishes by saving the organization's settings with `contexta_update_org_config` (`space`, `home`, `rules` for organization identity, storage, naming and anti-patterns, `space_rules` for this space's folder tree and pipeline routing, `instruction_file_written_at_root: true` and `setup_completed: true`). That save marks dashboard onboarding as complete for the space, so make sure it happens.
