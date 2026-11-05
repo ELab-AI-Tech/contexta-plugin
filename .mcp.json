@@ -2,7 +2,7 @@
   "mcpServers": {
     "contexta": {
       "type": "http",
-      "url": "https://aios.elab.co.nz/mcp"
+      "url": "https://mcp.getcontexta.ai/mcp"
     }
   }
 }

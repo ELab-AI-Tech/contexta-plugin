@@ -14,7 +14,7 @@ jobs:
         run: |
           set -euo pipefail
           # Slash commands only — do not match skill names like workspace/audit
-          # or the hosted URL https://aios.elab.co.nz/mcp.
+          # or the hosted URL https://mcp.getcontexta.ai/mcp.
           if grep -rnE '(^|[^[:alnum:]])\/(mcp|audit)([^[:alnum:]_-]|$)|support@' skills/ README.md; then
             echo "Banned customer-facing copy found."
             exit 1
