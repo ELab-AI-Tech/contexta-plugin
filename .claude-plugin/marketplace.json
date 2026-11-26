@@ -13,7 +13,7 @@
       "name": "contexta",
       "description": "Contexta connects Claude to your company brain and agent skills, so work follows how your business does it.",
       "source": "./",
-      "version": "2.5.1",
+      "version": "2.5.2",
       "strict": true,
       "author": {
         "name": "Contexta",
