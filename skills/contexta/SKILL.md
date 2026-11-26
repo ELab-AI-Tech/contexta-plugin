@@ -24,7 +24,8 @@ Compare `health` with the local workspace. Make a repair only where the table sa
 |---|---|---|
 | No instruction file (`health.instruction_file`) at the top of the folder open in this chat | Write it there, as a direct child of that folder, from the server setup template. Never inside a context folder or any other subfolder. If the only copy is inside a subfolder, move it to that open-folder root and do not leave the copy. Knowledge files still go to `health.write_destination` (alias `health.home_root`). That is the only write this check makes. | nothing, or one line |
 | Instruction file titled for another org, or missing the Contexta block | Correct the block, keep the rest | one line |
-| `health.setup_completed` is false for the active space | Fetch `setup/setup` and run it for that space home only | one question |
+| `health.setup_completed` is false for the active space and `your_access.can_finish_setup` is true | Fetch `setup/setup` and run it for that space home only | one question |
+| `health.setup_completed` is false for the active space and `your_access.can_finish_setup` is false | Do not start setup, create folders or save settings. Say once that an admin needs to finish setting up this space, naming them from `your_access.admins`, then carry on with what the user asked. | one line, once |
 | A plugin in `health.deprecated_client_plugins` is installed | Use the hosted skill from `health.published_skills`. Mention once that the older plugin can be removed in Settings → Plugins. | one line, once |
 | User intent matches a `health.skill_catalog` entry | Fetch that skill with `contexta_get_skill`. Org-specific entries win over generic ones. | nothing |
 | User intent matches a name in `health.published_skills` | Fetch that skill. Do not invent a local skill with the same job. | nothing |
